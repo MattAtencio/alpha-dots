@@ -1,0 +1,38 @@
+@import "tailwindcss";
+
+:root {
+  --color-cream: #FFF8F0;
+  --dot-active: #FF6B6B;
+  --dot-connected: #66BB6A;
+  --dot-upcoming: #BDBDBD;
+  --crayon-default: #1E88E5;
+  --star-earned: #FFD54F;
+  --star-empty: #E0E0E0;
+  --text-primary: #37474F;
+  --text-light: #78909C;
+}
+
+* { -webkit-tap-highlight-color: transparent; }
+
+@keyframes floatIn {
+  0% { transform: scale(0.5); opacity: 0; }
+  60% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes fadeUp {
+  from { transform: translateY(16px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+@keyframes starPop {
+  0% { transform: scale(0); opacity: 0; }
+  60% { transform: scale(1.3); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+@keyframes confettiFall {
+  0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}

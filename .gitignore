@@ -1,0 +1,5 @@
+node_modules
+.next
+out
+public/alpha-dots/sw.js
+public/alpha-dots/workbox-*.js
