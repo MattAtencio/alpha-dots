@@ -1,0 +1,44 @@
+{
+  "profile": "nextjs-game",
+  "description": "Alpha Dots - kids connect-the-dots game. GitHub repo, Vercel auto-deploy, Cloudflare CNAME subdomain.",
+  "repo": {
+    "org": "MattAtencio",
+    "name": "alpha-dots",
+    "template": null,
+    "private": true,
+    "branch_protection": false
+  },
+  "vercel": {
+    "framework": "nextjs",
+    "build_command": "npm run build",
+    "install_command": "npm ci",
+    "root_directory": null
+  },
+  "domain": {
+    "subdomain": "alpha-dots",
+    "zone": "mattatencio.com"
+  },
+  "supabase": {
+    "enabled": false
+  },
+  "env": {
+    "source": null,
+    "required": [],
+    "auto": {
+      "NEXT_PUBLIC_SITE_URL": "https://alpha-dots.mattatencio.com"
+    }
+  },
+  "ci": {
+    "workflow": null,
+    "skip": true
+  },
+  "steps": {
+    "github": true,
+    "vercel": true,
+    "dns": true,
+    "supabase": false,
+    "env_vars": false,
+    "security_review": true,
+    "notification": true
+  }
+}
