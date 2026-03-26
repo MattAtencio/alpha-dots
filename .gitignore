@@ -3,3 +3,5 @@ node_modules
 out
 public/alpha-dots/sw.js
 public/alpha-dots/workbox-*.js
+
+.vercel
