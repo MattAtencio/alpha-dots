@@ -10,15 +10,16 @@ import type { Density } from "@/engine/types";
 
 const MESSAGES = ["Great job!", "Awesome!", "You did it!", "Nice work!", "Way to go!"];
 
-interface Props { letter: string; density: Density; onBack: () => void; onNext: (l: string) => void; }
+interface Props { letter: string; density: Density; onBack: () => void; onNext: (l: string) => void; autoAdvance?: boolean; }
 
-export function GameScreen({ letter, density, onBack, onNext }: Props) {
+export function GameScreen({ letter, density, onBack, onNext, autoAdvance }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const engineRef = useRef<GameEngine | null>(null);
   const rendererRef = useRef<CanvasRenderer | null>(null);
   const animRef = useRef(0);
   const timerRef = useRef(0);
   const timer2Ref = useRef(0);
+  const autoAdvanceRef = useRef(0);
   const [letterDone, setLetterDone] = useState(false);
   const [showText, setShowText] = useState(false);
   const [showButtons, setShowButtons] = useState(false);
@@ -57,11 +58,24 @@ export function GameScreen({ letter, density, onBack, onNext }: Props) {
 
   useEffect(() => {
     setLetterDone(false); setShowText(false); setShowButtons(false); setStars(0);
-    clearTimeout(timerRef.current); clearTimeout(timer2Ref.current);
+    clearTimeout(timerRef.current); clearTimeout(timer2Ref.current); clearTimeout(autoAdvanceRef.current);
     const r = init(); if (!r) return;
     loop(r.engine, r.renderer);
-    return () => { cancelAnimationFrame(animRef.current); clearTimeout(timerRef.current); clearTimeout(timer2Ref.current); };
+    return () => { cancelAnimationFrame(animRef.current); clearTimeout(timerRef.current); clearTimeout(timer2Ref.current); clearTimeout(autoAdvanceRef.current); };
   }, [letter, density]);
+
+  // Auto-advance: after celebration, move to next letter automatically in Play mode
+  useEffect(() => {
+    if (!autoAdvance || !showButtons) return;
+    const next = getNextLetter(letter);
+    if (next) {
+      autoAdvanceRef.current = window.setTimeout(() => onNext(next), 1500);
+    } else {
+      // Last letter — return home after a short pause
+      autoAdvanceRef.current = window.setTimeout(() => onBack(), 2000);
+    }
+    return () => clearTimeout(autoAdvanceRef.current);
+  }, [autoAdvance, showButtons, letter, onNext, onBack]);
 
   const pt = (e: React.PointerEvent) => {
     const c = canvasRef.current; if (!c) return null;
@@ -90,7 +104,7 @@ export function GameScreen({ letter, density, onBack, onNext }: Props) {
 
   const replay = () => {
     setLetterDone(false); setShowText(false); setShowButtons(false); setStars(0);
-    clearTimeout(timerRef.current); clearTimeout(timer2Ref.current);
+    clearTimeout(timerRef.current); clearTimeout(timer2Ref.current); clearTimeout(autoAdvanceRef.current);
     cancelAnimationFrame(animRef.current);
     const r = init(); if (r) loop(r.engine, r.renderer);
   };

@@ -40,7 +40,7 @@ export default function Page() {
     <div className="h-full w-full flex flex-col">
       {screen === "home" && <HomeScreen onPlay={startPlay} onPractice={startPractice} onSettings={() => setScreen("settings")} />}
       {screen === "select" && <LetterSelectScreen onBack={() => setScreen("home")} onSelect={selectLetter} />}
-      {screen === "game" && <GameScreen key={gameKey} letter={letter} density={density} onBack={handleGameBack} onNext={handleNext} />}
+      {screen === "game" && <GameScreen key={gameKey} letter={letter} density={density} onBack={handleGameBack} onNext={handleNext} autoAdvance={gameMode === "play"} />}
       {screen === "settings" && <SettingsScreen onBack={() => setScreen("home")} />}
     </div>
   );
