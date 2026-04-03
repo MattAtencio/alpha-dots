@@ -5,3 +5,4 @@ public/alpha-dots/sw.js
 public/alpha-dots/workbox-*.js
 
 .vercel
+.env*.local
