@@ -5,6 +5,7 @@ import { HomeScreen } from "@/components/HomeScreen";
 import { LetterSelectScreen } from "@/components/LetterSelectScreen";
 import { GameScreen } from "@/components/GameScreen";
 import { SettingsScreen } from "@/components/SettingsScreen";
+import { BackToHub } from "@/components/BackToHub";
 import type { Density } from "@/engine/types";
 
 type Screen = "home" | "select" | "game" | "settings";
@@ -38,6 +39,7 @@ export default function Page() {
 
   return (
     <div className="h-full w-full flex flex-col">
+      <BackToHub />
       {screen === "home" && <HomeScreen onPlay={startPlay} onPractice={startPractice} onSettings={() => setScreen("settings")} />}
       {screen === "select" && <LetterSelectScreen onBack={() => setScreen("home")} onSelect={selectLetter} />}
       {screen === "game" && <GameScreen key={gameKey} letter={letter} density={density} onBack={handleGameBack} onNext={handleNext} autoAdvance={gameMode === "play"} />}

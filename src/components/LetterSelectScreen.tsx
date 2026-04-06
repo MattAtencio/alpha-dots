@@ -19,7 +19,7 @@ export function LetterSelectScreen({ onBack, onSelect }: { onBack: () => void; o
 
   return (
     <div className="flex flex-col h-full overflow-y-auto animate-[fadeUp_0.3s_ease]">
-      <div className="flex items-center justify-between px-4 py-3 sticky top-0 bg-[var(--color-cream)] z-10">
+      <div className="flex items-center justify-between pl-16 pr-4 py-3 sticky top-0 bg-[var(--color-cream)] z-10">
         <button onClick={onBack} className="w-11 h-11 rounded-full flex items-center justify-center active:bg-black/5">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M15 18l-6-6 6-6" /></svg>
         </button>

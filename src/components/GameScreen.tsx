@@ -6,6 +6,7 @@ import { CanvasRenderer } from "@/engine/CanvasRenderer";
 import { recordStars, loadProgress } from "@/utils/storage";
 import { getNextLetter } from "@/data/letterGroups";
 import { Confetti } from "./Confetti";
+import { CaterpillarColorPicker } from "./CaterpillarColorPicker";
 import type { Density } from "@/engine/types";
 
 const MESSAGES = ["Great job!", "Awesome!", "You did it!", "Nice work!", "Way to go!"];
@@ -25,12 +26,13 @@ export function GameScreen({ letter, density, onBack, onNext, autoAdvance }: Pro
   const [showButtons, setShowButtons] = useState(false);
   const [stars, setStars] = useState(0);
   const [message] = useState(() => MESSAGES[Math.floor(Math.random() * MESSAGES.length)]);
+  const [crayonColor, setCrayonColor] = useState(() => loadProgress().crayonColor);
   const progress = loadProgress();
 
   const getSize = useCallback(() => {
     const vw = window.innerWidth;
     const vh = window.innerHeight;
-    return Math.floor(Math.min(vw, vh - 80) * 0.95);
+    return Math.floor(Math.min(vw, vh - 140) * 0.95);
   }, []);
 
   const loop = (engine: GameEngine, renderer: CanvasRenderer) => {
@@ -50,11 +52,11 @@ export function GameScreen({ letter, density, onBack, onNext, autoAdvance }: Pro
     canvas.width = size * dpr; canvas.height = size * dpr;
     canvas.style.width = `${size}px`; canvas.style.height = `${size}px`;
     const ctx = canvas.getContext("2d")!; ctx.scale(dpr, dpr);
-    const engine = new GameEngine(letter, density, size, progress.crayonColor);
+    const engine = new GameEngine(letter, density, size, crayonColor);
     const renderer = new CanvasRenderer(ctx, size);
     engineRef.current = engine; rendererRef.current = renderer;
     return { engine, renderer };
-  }, [letter, density, progress.crayonColor, getSize]);
+  }, [letter, density, crayonColor, getSize]);
 
   useEffect(() => {
     setLetterDone(false); setShowText(false); setShowButtons(false); setStars(0);
@@ -109,11 +111,18 @@ export function GameScreen({ letter, density, onBack, onNext, autoAdvance }: Pro
     const r = init(); if (r) loop(r.engine, r.renderer);
   };
 
+  const handleColorChange = useCallback((color: string) => {
+    setCrayonColor(color);
+    if (engineRef.current) {
+      engineRef.current.state.crayonColor = color;
+    }
+  }, []);
+
   const nextLetter = getNextLetter(letter);
 
   return (
     <div className="flex flex-col h-full overflow-hidden animate-[fadeUp_0.3s_ease]">
-      <div className="flex items-center justify-between px-3 py-2 h-14 shrink-0">
+      <div className="flex items-center justify-between pl-16 pr-3 py-2 h-14 shrink-0">
         <button onClick={onBack} className="w-11 h-11 rounded-full flex items-center justify-center active:bg-black/5">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M15 18l-6-6 6-6" /></svg>
         </button>
@@ -140,6 +149,10 @@ export function GameScreen({ letter, density, onBack, onNext, autoAdvance }: Pro
           </div>
         )}
       </div>
+
+      {!letterDone && (
+        <CaterpillarColorPicker selectedColor={crayonColor} onColorChange={handleColorChange} />
+      )}
 
       {letterDone && stars >= 3 && <Confetti />}
 
