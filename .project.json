@@ -1,0 +1,10 @@
+{
+  "$schema": "https://raw.githubusercontent.com/MattAtencio/portfolio/main/schemas/project.schema.json",
+  "id": "alpha-dots",
+  "name": "Alpha Dots",
+  "kind": "project",
+  "type": "game",
+  "status": "active",
+  "group": "games-kids",
+  "tags": ["kids", "public"]
+}
